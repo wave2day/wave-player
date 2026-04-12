@@ -63,6 +63,14 @@ function renderPlayer() {
   state.screen = "player";
   applyTheme();
 
+  const metaText =
+    typeof player !== "undefined" &&
+    player &&
+    Array.isArray(player.playlist) &&
+    player.playlist.length
+      ? `${player.index + 1} of ${player.playlist.length}`
+      : "0 of 0";
+
   root.innerHTML = `
     <div class="lcd">
       <div class="lcdTopbar">
@@ -76,7 +84,7 @@ function renderPlayer() {
       </div>
 
       <div class="lcdMain">
-        <div class="lcdMeta">34 of 39</div>
+        <div class="lcdMeta">${metaText}</div>
 
         <div class="lcdCenter">
           <div class="lcdTitle" data-text="${state.nowPlaying.title}">
@@ -96,7 +104,7 @@ function renderPlayer() {
       <div class="lcdBottom">
         <div class="lcdProgressWrap">
           <div class="lcdProgress">
-            <div class="lcdProgressFill"></div>
+            <div class="lcdProgressFill" style="width: 0%"></div>
           </div>
 
           <div class="lcdTimes">
