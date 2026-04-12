@@ -11,7 +11,7 @@ const ui = {
 const menus = {
   main: [
     { label: "Now Playing", action: "player" },
-    { label: "Library", action: "noop" },
+    { label: "Library", action: "library" },
     { label: "Display", action: "display" },
     { label: "Sound", action: "sound" },
     { label: "About", action: "noop" }
