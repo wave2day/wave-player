@@ -1,0 +1,90 @@
+.iWheel{
+  --iconOrbit:25%;
+}
+
+.iWheelZone,
+.iWheelIcon{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+}
+
+.iWheelZone{
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  appearance:none;
+  -webkit-appearance:none;
+  background:transparent;
+  border:none;
+  outline:none;
+  box-shadow:none;
+  border-radius:0;
+  cursor:pointer;
+  z-index:6;
+}
+
+.iWheelZone--top{
+  clip-path:polygon(50% 50%, 22% 8%, 78% 8%);
+}
+
+.iWheelZone--right{
+  clip-path:polygon(50% 50%, 92% 22%, 92% 78%);
+}
+
+.iWheelZone--bottom{
+  clip-path:polygon(50% 50%, 22% 92%, 78% 92%);
+}
+
+.iWheelZone--left{
+  clip-path:polygon(50% 50%, 8% 22%, 8% 78%);
+}
+
+.iWheelIcon{
+  z-index:10;
+  pointer-events:none;
+  color:rgba(0,0,0,.68);
+  font-weight:600;
+  line-height:1;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+.iWheelIcon--top{
+  top:25%;
+}
+
+.iWheelIcon--right{
+  left:75%;
+  font-size:20px;
+}
+
+.iWheelIcon--bottom{
+  top:75%;
+  font-size:20px;
+}
+
+.iWheelIcon--left{
+  left:25%;
+  font-size:20px;
+}
+
+.iWheelIcon .cardBtn{
+  width:20px;
+  height:20px;
+  padding:0;
+  margin:0;
+  border:none;
+  background:transparent;
+  display:block;
+  pointer-events:auto;
+  cursor:pointer;
+}
+
+.iWheelIcon .cardBtn svg{
+  display:block;
+  width:100%;
+  height:100%;
+}
