@@ -141,3 +141,30 @@ function renderCurrentScreen() {
 }
 
 renderPlayer();
+function renderLibrary() {
+  if (!root || typeof player === "undefined") return;
+
+  state.screen = "library";
+  applyTheme();
+
+  const tracks = player.playlist || [];
+
+  root.innerHTML = `
+    <div class="lcd">
+      <div class="lcdTopbar">
+        <div class="lcdTitle">Library</div>
+      </div>
+
+      <div class="lcdList">
+        ${tracks.map((t, i) => `
+          <div class="lcdListItem ${i === player.index ? "is-active" : ""}" data-index="${i}">
+            <div class="lcdListTitle">${t.title}</div>
+            <div class="lcdListArtist">${t.artist}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+
+  bindLibraryUI();
+}
