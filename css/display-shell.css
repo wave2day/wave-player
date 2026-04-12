@@ -474,3 +474,29 @@
   transform:translateX(0);
   opacity:1;
 }
+.lcdList{
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.lcdListItem{
+  padding:6px 8px;
+  border-radius:6px;
+  background:rgba(0,0,0,0.05);
+}
+
+.lcdListItem.is-active{
+  background:rgba(0,0,0,0.15);
+}
+
+.lcdListTitle{
+  font-size:12px;
+  font-weight:600;
+}
+
+.lcdListArtist{
+  font-size:10px;
+  opacity:.6;
+}
