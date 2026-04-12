@@ -394,17 +394,11 @@ if (menuBtn) {
 if (btnTop) {
   btnTop.addEventListener("click", () => {
     if (typeof state !== "undefined" && state.volumeMode) {
+      stepVolume(1);
       return;
     }
 
-    if (typeof ui !== "undefined" && ui.open && typeof menuUp === "function") {
-      menuUp();
-      return;
-    }
-
-    if (typeof prevTrack === "function") {
-      prevTrack();
-    }
+    // zatím schválně nic – ať se to nehádá s menu ikonou nahoře
   });
 }
 
@@ -414,23 +408,21 @@ if (btnRight) {
       stepVolume(1);
       return;
     }
+
+    if (typeof nextTrack === "function") {
+      nextTrack();
+    }
   });
 }
 
 if (btnBottom) {
   btnBottom.addEventListener("click", () => {
     if (typeof state !== "undefined" && state.volumeMode) {
+      stepVolume(-1);
       return;
     }
 
-    if (typeof ui !== "undefined" && ui.open && typeof menuDown === "function") {
-      menuDown();
-      return;
-    }
-
-    if (typeof nextTrack === "function") {
-      nextTrack();
-    }
+    // zatím schválně nic
   });
 }
 
@@ -459,8 +451,8 @@ if (btnLeft) {
       return;
     }
 
-    if (typeof ui !== "undefined" && ui.open && typeof menuBack === "function") {
-      menuBack();
+    if (typeof prevTrack === "function") {
+      prevTrack();
     }
   });
 }
