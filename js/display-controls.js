@@ -395,10 +395,7 @@ if (btnTop) {
   btnTop.addEventListener("click", () => {
     if (typeof state !== "undefined" && state.volumeMode) {
       stepVolume(1);
-      return;
     }
-
-    // zatím schválně nic – ať se to nehádá s menu ikonou nahoře
   });
 }
 
@@ -422,7 +419,9 @@ if (btnBottom) {
       return;
     }
 
-    // zatím schválně nic
+    if (typeof togglePlayPause === "function") {
+      togglePlayPause();
+    }
   });
 }
 
