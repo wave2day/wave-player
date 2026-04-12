@@ -168,3 +168,19 @@ function renderLibrary() {
 
   bindLibraryUI();
 }
+function bindLibraryUI() {
+  const items = root.querySelectorAll(".lcdListItem");
+
+  items.forEach(el => {
+    el.addEventListener("click", () => {
+      const index = Number(el.dataset.index);
+
+      if (typeof loadTrack === "function") {
+        loadTrack(index, true);
+      }
+
+      state.screen = "player";
+      renderPlayer();
+    });
+  });
+}
