@@ -261,6 +261,10 @@ function setVolume(value) {
   state.muted = next === 0;
   state.volumeMode = true;
 
+  if (typeof syncVolumeToAudio === "function") {
+    syncVolumeToAudio();
+  }
+
   saveDisplayState();
   updateVolumeButtonInPlace();
   showOSD("volume", null);
@@ -292,6 +296,10 @@ function toggleMute() {
 
   if (!state.muted && state.volume === 0) {
     state.volume = 4;
+  }
+
+  if (typeof syncVolumeToAudio === "function") {
+    syncVolumeToAudio();
   }
 
   saveDisplayState();
@@ -391,6 +399,11 @@ if (btnTop) {
 
     if (typeof ui !== "undefined" && ui.open && typeof menuUp === "function") {
       menuUp();
+      return;
+    }
+
+    if (typeof prevTrack === "function") {
+      prevTrack();
     }
   });
 }
@@ -412,6 +425,11 @@ if (btnBottom) {
 
     if (typeof ui !== "undefined" && ui.open && typeof menuDown === "function") {
       menuDown();
+      return;
+    }
+
+    if (typeof nextTrack === "function") {
+      nextTrack();
     }
   });
 }
@@ -425,6 +443,11 @@ if (btnCenter) {
 
     if (typeof ui !== "undefined" && ui.open && typeof menuSelect === "function") {
       menuSelect();
+      return;
+    }
+
+    if (typeof togglePlayPause === "function") {
+      togglePlayPause();
     }
   });
 }
