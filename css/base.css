@@ -45,3 +45,22 @@ body{
   background:var(--bg);
   padding:28px 18px;
 }
+.iBody{
+  touch-action:none;
+  position:fixed;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+}
+
+.iBody.is-dragging{
+  transition:none !important;
+}
+
+.iBody,
+.iBody *{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
+}
