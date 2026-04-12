@@ -137,6 +137,11 @@ function renderCurrentScreen() {
     return;
   }
 
+  if (state.screen === "library") {
+    renderLibrary();
+    return;
+  }
+
   renderPlayer();
 }
 
