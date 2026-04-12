@@ -1,47 +1,26 @@
 const playerBody = document.querySelector(".iBody");
+const dragHandle = document.querySelector(".iDisplay");
 
-if (playerBody) {
+if (playerBody && dragHandle) {
   let dragging = false;
   let startX = 0;
   let startY = 0;
-  let originLeft = 0;
-  let originTop = 0;
+  let originX = 0;
+  let originY = 0;
 
-  const interactiveSelector = [
-    ".iWheel",
-    ".iWheelZone",
-    ".iWheelCenter",
-    ".cardBtn",
-    "[data-role='volume-button']",
-    "button"
-  ].join(",");
-
-  function px(n) {
-    return `${Math.round(n)}px`;
+  function getVarPx(name) {
+    const value = getComputedStyle(playerBody).getPropertyValue(name).trim();
+    return parseFloat(value || "0") || 0;
   }
 
   function onPointerDown(e) {
-    const target = e.target;
-
-    if (target.closest(interactiveSelector)) {
-      return;
-    }
-
     dragging = true;
-    playerBody.classList.add("is-dragging");
-
-    const rect = playerBody.getBoundingClientRect();
-
-    playerBody.style.transform = "none";
-    playerBody.style.left = px(rect.left);
-    playerBody.style.top = px(rect.top);
-
-    originLeft = rect.left;
-    originTop = rect.top;
     startX = e.clientX;
     startY = e.clientY;
+    originX = getVarPx("--drag-x");
+    originY = getVarPx("--drag-y");
 
-    playerBody.setPointerCapture?.(e.pointerId);
+    dragHandle.setPointerCapture?.(e.pointerId);
   }
 
   function onPointerMove(e) {
@@ -50,20 +29,17 @@ if (playerBody) {
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
 
-    playerBody.style.left = px(originLeft + dx);
-    playerBody.style.top = px(originTop + dy);
+    playerBody.style.setProperty("--drag-x", `${originX + dx}px`);
+    playerBody.style.setProperty("--drag-y", `${originY + dy}px`);
   }
 
   function onPointerUp(e) {
-    if (!dragging) return;
-
     dragging = false;
-    playerBody.classList.remove("is-dragging");
-    playerBody.releasePointerCapture?.(e.pointerId);
+    dragHandle.releasePointerCapture?.(e.pointerId);
   }
 
-  playerBody.addEventListener("pointerdown", onPointerDown);
-  playerBody.addEventListener("pointermove", onPointerMove);
-  playerBody.addEventListener("pointerup", onPointerUp);
-  playerBody.addEventListener("pointercancel", onPointerUp);
+  dragHandle.addEventListener("pointerdown", onPointerDown);
+  dragHandle.addEventListener("pointermove", onPointerMove);
+  dragHandle.addEventListener("pointerup", onPointerUp);
+  dragHandle.addEventListener("pointercancel", onPointerUp);
 }
