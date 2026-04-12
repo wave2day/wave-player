@@ -107,3 +107,26 @@ mask-composite: exclude;
   -webkit-touch-callout:none;
   -webkit-tap-highlight-color:transparent;
 }
+.iBody{
+  position:fixed;
+  left:50%;
+  top:50%;
+  --drag-x: 0px;
+  --drag-y: 0px;
+  transform:translate(
+    calc(-50% + var(--drag-x)),
+    calc(-50% + var(--drag-y))
+  );
+}
+
+.iDisplay{
+  touch-action:none;
+}
+
+.iBody,
+.iBody *{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
+}
