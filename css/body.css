@@ -100,3 +100,10 @@ mask:
 -webkit-mask-composite: xor;
 mask-composite: exclude;
 }
+.iBody,
+.iBody *{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
+}
