@@ -232,7 +232,13 @@ function renderMenu() {
           <button type="button" class="lcdMenuItem ${i === ui.index ? "is-active" : ""} ${item.action === "back" ? "is-back" : ""}">
             <span class="lcdMenuLabel">${item.label}</span>
             <span class="lcdMenuSide">
-              <span class="lcdMenuValue">${menuValueFor(item)}</span>
+              <span class="lcdMenuValue">
+  <span class="marquee">
+    <span class="marqueeInner">
+      ${menuValueFor(item)}
+    </span>
+  </span>
+</span>
               <span class="lcdMenuArrow">${isSubmenuAction(item.action) ? "›" : ""}</span>
             </span>
           </button>
