@@ -14,6 +14,10 @@ const state = {
   muted: false,
   volumeMode: false,
   eq: "flat",
+
+  shuffle: false,
+  repeat: "off",
+
   osd: null,
 
   nowPlaying: {
