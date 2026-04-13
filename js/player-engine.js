@@ -38,31 +38,7 @@ function syncNowPlayingMeta() {
 }
 
 function syncNowPlayingTimes() {
-  if (typeof state === "undefined") return;
-
-  const track = getCurrentTrack();
-  const current = player.audio.currentTime || 0;
-  const duration = player.audio.duration || track?.duration || 0;
-  const remaining = Math.max(0, duration - current);
-
-  state.nowPlaying.time = formatTime(current);
-  state.nowPlaying.remaining = `-${formatTime(remaining)}`;
-}
-
-function updateProgressUI() {
-  const fill = document.querySelector(".lcdProgressFill");
-  if (!fill) return;
-
-  const duration = player.audio.duration || getCurrentTrack()?.duration || 0;
-  const current = player.audio.currentTime || 0;
-  const pct = duration > 0 ? (current / duration) * 100 : 0;
-
-  fill.style.width = `${pct}%`;
-}
-
-function updateTimesUI() {
-  const times = document.querySelectorAll(".lcdTimes span");
-  if (times.length < 2 || typeof state === "undefined") return;
+  if (typeof state === "  if (times.length < 2 || typeof state === "undefined") return;
 
   times[0].textContent = state.nowPlaying.time;
   times[1].textContent = state.nowPlaying.remaining;
