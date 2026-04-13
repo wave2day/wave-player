@@ -124,6 +124,26 @@ function menuValueFor(item) {
   return "";
 }
 
+function renderMenuValueText(value) {
+  const text = String(value ?? "");
+
+  if (!text) return "";
+
+  if (text.length <= 12) {
+    return `<span class="lcdMenuValueStatic">${text}</span>`;
+  }
+
+  return `
+    <span class="marquee">
+      <span class="marqueeInner">
+        <span class="marqueeText">${text}</span>
+        <span class="marqueeGap"></span>
+        <span class="marqueeText">${text}</span>
+      </span>
+    </span>
+  `;
+}
+
 function renderVolumeIcon() {
   const level = state.muted ? 0 : Math.min(6, Math.max(0, Math.round((state.volume / state.volumeMax) * 6)));
 
@@ -233,13 +253,7 @@ function renderMenu() {
             <span class="lcdMenuLabel">${item.label}</span>
             <span class="lcdMenuSide">
               <span class="lcdMenuValue">
-                <span class="marquee">
-                  <span class="marqueeInner">
-                    <span class="marqueeText">${menuValueFor(item)}</span>
-                    <span class="marqueeGap"></span>
-                    <span class="marqueeText">${menuValueFor(item)}</span>
-                  </span>
-                </span>
+                ${renderMenuValueText(menuValueFor(item))}
               </span>
               <span class="lcdMenuArrow">${isSubmenuAction(item.action) ? "›" : ""}</span>
             </span>
