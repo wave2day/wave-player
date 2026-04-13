@@ -330,33 +330,41 @@ function menuSelect() {
     return;
   }
 
-  if (item.action === "playmode-normal") {
-    state.shuffle = false;
-    state.repeat = "off";
-    renderMenu();
-    return;
-  }
+if (item.action === "playmode-normal") {
+  state.shuffle = false;
+  state.repeat = "off";
+  ui.stack = ["main"];
+  ui.index = 2;
+  renderMenu();
+  return;
+}
 
-  if (item.action === "playmode-shuffle") {
-    state.shuffle = true;
-    state.repeat = "off";
-    renderMenu();
-    return;
-  }
+if (item.action === "playmode-shuffle") {
+  state.shuffle = true;
+  state.repeat = "off";
+  ui.stack = ["main"];
+  ui.index = 2;
+  renderMenu();
+  return;
+}
 
-  if (item.action === "playmode-repeat-all") {
-    state.shuffle = false;
-    state.repeat = "all";
-    renderMenu();
-    return;
-  }
+if (item.action === "playmode-repeat-all") {
+  state.shuffle = false;
+  state.repeat = "all";
+  ui.stack = ["main"];
+  ui.index = 2;
+  renderMenu();
+  return;
+}
 
-  if (item.action === "playmode-repeat-one") {
-    state.shuffle = false;
-    state.repeat = "one";
-    renderMenu();
-    return;
-  }
+if (item.action === "playmode-repeat-one") {
+  state.shuffle = false;
+  state.repeat = "one";
+  ui.stack = ["main"];
+  ui.index = 2;
+  renderMenu();
+  return;
+}
 
   if (item.action === "theme-classic") {
     setDisplayMode("classic");
