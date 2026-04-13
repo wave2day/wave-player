@@ -595,16 +595,15 @@
   }
 }
 .lcdStateIcon{
-  width:22px;
-  height:22px;
+  width:14px;
+  height:14px;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
 .lcdGlyph{
-  width:22px;
-  height:22px;
+  width:14px;
+  height:14px;
   fill:var(--lcd-ink-color);
-  display:block;
 }
