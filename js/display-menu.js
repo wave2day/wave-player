@@ -206,11 +206,13 @@ function renderMenu() {
 
   root.innerHTML = `
     <div class="lcd">
-      <div class="lcdTopbar">
-        <div></div>
-        <div class="lcdArtistTop">${key === "main" ? "Menu" : menuTitleFromKey(key)}</div>
-        ${renderVolumeIcon()}
-      </div>
+     <div class="lcdTopbar">
+  <div class="lcdStateIcon">
+    ${typeof renderPlaybackStateIcon === "function" ? renderPlaybackStateIcon() : ""}
+  </div>
+  <div class="lcdArtistTop">${key === "main" ? "Menu" : menuTitleFromKey(key)}</div>
+  ${renderVolumeIcon()}
+</div>
 
       <div class="lcdMenuBody">
         ${menu.map((item, i) => `
