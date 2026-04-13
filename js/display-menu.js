@@ -206,13 +206,23 @@ function renderMenu() {
 
   root.innerHTML = `
     <div class="lcd">
-     <div class="lcdTopbar">
-  <div class="lcdStateIcon">
-    ${typeof renderPlaybackStateIcon === "function" ? renderPlaybackStateIcon() : ""}
-  </div>
-  <div class="lcdArtistTop">${key === "main" ? "Menu" : menuTitleFromKey(key)}</div>
-  ${renderVolumeIcon()}
-</div>
+      <div class="lcdTopbar">
+        <div class="lcdStateCluster">
+          <div class="lcdStateIcon">
+            ${typeof renderPlaybackStateIcon === "function" ? renderPlaybackStateIcon() : ""}
+          </div>
+          <div class="lcdModeSlot">
+            ${typeof renderShuffleStateIcon === "function" ? renderShuffleStateIcon() : ""}
+          </div>
+          <div class="lcdModeSlot">
+            ${typeof renderRepeatStateIcon === "function" ? renderRepeatStateIcon() : ""}
+          </div>
+        </div>
+
+        <div class="lcdArtistTop">${key === "main" ? "Menu" : menuTitleFromKey(key)}</div>
+
+        ${renderVolumeIcon()}
+      </div>
 
       <div class="lcdMenuBody">
         ${menu.map((item, i) => `
@@ -335,6 +345,8 @@ function menuSelect() {
   if (item.action === "playmode-normal") {
     state.shuffle = false;
     state.repeat = "off";
+    ui.stack = ["main"];
+    ui.index = 2;
     renderMenu();
     return;
   }
@@ -342,6 +354,8 @@ function menuSelect() {
   if (item.action === "playmode-shuffle") {
     state.shuffle = true;
     state.repeat = "off";
+    ui.stack = ["main"];
+    ui.index = 2;
     renderMenu();
     return;
   }
@@ -349,6 +363,8 @@ function menuSelect() {
   if (item.action === "playmode-repeat-all") {
     state.shuffle = false;
     state.repeat = "all";
+    ui.stack = ["main"];
+    ui.index = 2;
     renderMenu();
     return;
   }
@@ -356,6 +372,8 @@ function menuSelect() {
   if (item.action === "playmode-repeat-one") {
     state.shuffle = false;
     state.repeat = "one";
+    ui.stack = ["main"];
+    ui.index = 2;
     renderMenu();
     return;
   }
