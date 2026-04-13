@@ -12,9 +12,17 @@ const menus = {
   main: [
     { label: "Now Playing", action: "player" },
     { label: "Library", action: "library" },
+    { label: "Play Mode", action: "playmode" },
     { label: "Display", action: "display" },
-    { label: "Sound", action: "sound" },
-    { label: "About", action: "noop" }
+    { label: "Sound", action: "sound" }
+  ],
+
+  playmode: [
+    { label: "Normal", action: "playmode-normal" },
+    { label: "Shuffle", action: "playmode-shuffle" },
+    { label: "Repeat All", action: "playmode-repeat-all" },
+    { label: "Repeat One", action: "playmode-repeat-one" },
+    { label: "‹", action: "back" }
   ],
 
   display: [
@@ -88,6 +96,15 @@ function menuTitleFromKey(key) {
 
 function menuValueFor(item) {
   const key = currentMenuKey();
+
+  if (key === "main") {
+    if (item.action === "playmode") {
+      if (state.shuffle) return "shuffle";
+      if (state.repeat === "all") return "repeat";
+      if (state.repeat === "one") return "1";
+      return "normal";
+    }
+  }
 
   if (key === "display") {
     if (item.action === "theme") return state.theme;
@@ -298,16 +315,46 @@ function menuSelect() {
     closeMenu();
     return;
   }
+
   if (item.action === "library") {
-  ui.open = false;
-  if (typeof state !== "undefined") state.screen = "library";
-  if (typeof renderLibrary === "function") {
-    renderLibrary();
+    ui.open = false;
+    if (typeof state !== "undefined") state.screen = "library";
+    if (typeof renderLibrary === "function") {
+      renderLibrary();
+    }
+    return;
   }
-  return;
-}
+
   if (item.action === "volume-open") {
     openVolumeMode();
+    return;
+  }
+
+  if (item.action === "playmode-normal") {
+    state.shuffle = false;
+    state.repeat = "off";
+    renderMenu();
+    return;
+  }
+
+  if (item.action === "playmode-shuffle") {
+    state.shuffle = true;
+    state.repeat = "off";
+    renderMenu();
+    return;
+  }
+
+  if (item.action === "playmode-repeat-all") {
+    state.shuffle = false;
+    state.repeat = "all";
+    renderMenu();
+    return;
+  }
+
+  if (item.action === "playmode-repeat-one") {
+    state.shuffle = false;
+    state.repeat = "one";
+    renderMenu();
     return;
   }
 
