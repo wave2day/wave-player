@@ -189,7 +189,9 @@ function applyDisplayState() {
 }
 
 function rerenderActiveScreen() {
-  if (typeof ui !== "undefined" && ui.open && typeof renderMenu === "function") {
+  if (typeof renderCurrentScreen === "function") {
+    renderCurrentScreen();
+  } else if (typeof ui !== "undefined" && ui.open && typeof renderMenu === "function") {
     renderMenu();
   } else if (typeof renderPlayer === "function") {
     renderPlayer();
