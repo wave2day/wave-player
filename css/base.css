@@ -76,10 +76,3 @@ body{
     padding: 12px;
   }
 }
-@media (max-width: 480px){
-  :root{
-    --bodyW: min(89vw, 370px);
-    --bodyRadius: 33px;
-    --frameInset: 34px;
-  }
-}
