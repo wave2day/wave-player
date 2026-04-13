@@ -121,6 +121,16 @@ function loadTrack(index, autoplay = false) {
   }
 }
 
+function getRandomNextIndex() {
+  if (player.playlist.length <= 1) return player.index;
+
+  let next = player.index;
+  while (next === player.index) {
+    next = Math.floor(Math.random() * player.playlist.length);
+  }
+  return next;
+}
+
 function togglePlayPause() {
   if (!player.isReady) return;
 
@@ -135,18 +145,47 @@ function togglePlayPause() {
   refreshPlayerUI();
 }
 
-function nextTrack() {
+function nextTrack(forceAutoplay = true) {
   if (!player.playlist.length) return;
 
-  const next = (player.index + 1) % player.playlist.length;
-  loadTrack(next, true);
+  let next;
+
+  if (typeof state !== "undefined" && state.shuffle) {
+    next = getRandomNextIndex();
+  } else {
+    next = player.index + 1;
+
+    if (next >= player.playlist.length) {
+      if (typeof state !== "undefined" && state.repeat === "all") {
+        next = 0;
+      } else {
+        player.audio.pause();
+        player.audio.currentTime = 0;
+        refreshPlayerUI();
+        return;
+      }
+    }
+  }
+
+  loadTrack(next, forceAutoplay);
 }
 
-function prevTrack() {
+function prevTrack(forceAutoplay = true) {
   if (!player.playlist.length) return;
 
-  const prev = (player.index - 1 + player.playlist.length) % player.playlist.length;
-  loadTrack(prev, true);
+  let prev;
+
+  if (typeof state !== "undefined" && state.shuffle) {
+    prev = getRandomNextIndex();
+  } else {
+    prev = player.index - 1;
+
+    if (prev < 0) {
+      prev = player.playlist.length - 1;
+    }
+  }
+
+  loadTrack(prev, forceAutoplay);
 }
 
 function seekToRatio(ratio) {
@@ -183,7 +222,12 @@ player.audio.addEventListener("pause", () => {
 });
 
 player.audio.addEventListener("ended", () => {
-  nextTrack();
+  if (typeof state !== "undefined" && state.repeat === "one") {
+    loadTrack(player.index, true);
+    return;
+  }
+
+  nextTrack(true);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
