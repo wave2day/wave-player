@@ -64,3 +64,15 @@ body{
   -webkit-touch-callout:none;
   -webkit-tap-highlight-color:transparent;
 }
+@media (max-width: 480px){
+  :root{
+    --bodyW: min(94vw, 420px);
+    --bodyRadius: 28px;
+    --frameInset: 20px;
+    --glassRingThickness: 10px;
+  }
+
+  body{
+    padding: 12px;
+  }
+}
