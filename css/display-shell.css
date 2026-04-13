@@ -689,7 +689,10 @@
   width:24px;
   flex:0 0 24px;
 }
-
+.lcdMenuValueStatic{
+  display:inline-block;
+  white-space:nowrap;
+}
 @keyframes marqueeScroll{
   0%{
     transform:translateX(0);
