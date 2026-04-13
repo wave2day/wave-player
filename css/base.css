@@ -78,8 +78,8 @@ body{
 }
 @media (max-width: 480px){
   :root{
-    --bodyW: min(88vw, 360px);
-    --bodyRadius: 30px;
-    --frameInset: 26px;
+    --bodyW: min(89vw, 370px);
+    --bodyRadius: 33px;
+    --frameInset: 34px;
   }
 }
