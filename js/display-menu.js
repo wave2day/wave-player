@@ -298,7 +298,14 @@ function menuSelect() {
     closeMenu();
     return;
   }
-
+  if (item.action === "library") {
+  ui.open = false;
+  if (typeof state !== "undefined") state.screen = "library";
+  if (typeof renderLibrary === "function") {
+    renderLibrary();
+  }
+  return;
+}
   if (item.action === "volume-open") {
     openVolumeMode();
     return;
