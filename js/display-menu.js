@@ -355,13 +355,18 @@ function menuSelect() {
   }
 
   if (item.action === "playmode-shuffle") {
-    state.shuffle = !state.shuffle;
-    ui.stack = ["main"];
-    ui.index = 2;
-    renderMenu();
-    return;
+  const nextShuffle = !state.shuffle;
+  state.shuffle = nextShuffle;
+
+  if (nextShuffle && state.repeat === "one") {
+    state.repeat = "off";
   }
 
+  ui.stack = ["main"];
+  ui.index = 2;
+  renderMenu();
+  return;
+}
   if (item.action === "playmode-repeat-all") {
     state.repeat = state.repeat === "all" ? "off" : "all";
     ui.stack = ["main"];
@@ -371,12 +376,18 @@ function menuSelect() {
   }
 
   if (item.action === "playmode-repeat-one") {
-    state.repeat = state.repeat === "one" ? "off" : "one";
-    ui.stack = ["main"];
-    ui.index = 2;
-    renderMenu();
-    return;
+  const nextRepeatOne = state.repeat === "one" ? "off" : "one";
+  state.repeat = nextRepeatOne;
+
+  if (nextRepeatOne === "one") {
+    state.shuffle = false;
   }
+
+  ui.stack = ["main"];
+  ui.index = 2;
+  renderMenu();
+  return;
+}
 
   if (item.action === "theme-classic") {
     setDisplayMode("classic");
