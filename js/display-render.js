@@ -5,6 +5,27 @@ function applyTheme() {
   root.className = `displayRoot theme-${state.theme}`;
 }
 
+function renderPlaybackStateIcon() {
+  const isPlaying =
+    typeof player !== "undefined" &&
+    player.audio &&
+    !player.audio.paused;
+
+  if (isPlaying) {
+    return `
+      <svg class="lcdGlyph" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7 5v14l11-7z"></path>
+      </svg>
+    `;
+  }
+
+  return `
+    <svg class="lcdGlyph" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 5h4v14H7zM13 5h4v14h-4z"></path>
+    </svg>
+  `;
+}
+
 function renderVolumeIcon() {
   const level = state.muted
     ? 0
@@ -63,6 +84,148 @@ function renderPlayer() {
   state.screen = "player";
   applyTheme();
 
+  const metaText =
+    typeof player !== "undefined" &&
+    player &&
+    Array.isArray(player.playlist) &&
+    player.playlist.length
+      ? `${player.index + 1} of ${player.playlist.length}`
+      : "0 of 0";
+
+  root.innerHTML = `
+    <div class="lcd">
+      <div class="lcdTopbar">
+        <div class="lcdStateIcon">
+          ${renderPlaybackStateIcon()}
+        </div>
+
+        <div class="lcdArtistTop" data-text="${state.nowPlaying.artist}">
+          ${state.nowPlaying.artist}
+        </div>
+
+        ${renderVolumeIcon()}
+      </div>
+
+      <div class="lcdMain">
+        <div class="lcdMeta">${metaText}</div>
+
+        <div class="lcdCenter">
+          <div class="lcdTitle" data-text="${state.nowPlaying.title}">
+            ${state.nowPlaying.title}
+          </div>
+
+          <div class="lcdArtist" data-text="${state.nowPlaying.artist}">
+            ${state.nowPlaying.artist}
+          </div>
+
+          <div class="lcdAlbum" data-text="${state.nowPlaying.album}">
+            ${state.nowPlaying.album}
+          </div>
+        </div>
+      </div>
+
+      <div class="lcdBottom">
+        <div class="lcdProgressWrap">
+          <div class="lcdProgress">
+            <div class="lcdProgressFill" style="width: 0%"></div>
+          </div>
+
+          <div class="lcdTimes">
+            <span data-text="${state.nowPlaying.time}">
+              ${state.nowPlaying.time}
+            </span>
+            <span data-text="${state.nowPlaying.remaining}">
+              ${state.nowPlaying.remaining}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      ${renderOSD()}
+    </div>
+  `;
+
+  if (typeof bindDisplayUI === "function") {
+    bindDisplayUI();
+  }
+
+  if (typeof applyDisplayState === "function") {
+    applyDisplayState();
+  }
+}
+
+function renderLibrary() {
+  if (!root || typeof player === "undefined") return;
+
+  state.screen = "library";
+  applyTheme();
+
+  const tracks = player.playlist || [];
+
+  root.innerHTML = `
+    <div class="lcd">
+      <div class="lcdTopbar">
+        <div class="lcdStateIcon"></div>
+        <div class="lcdArtistTop">Library</div>
+        ${renderVolumeIcon()}
+      </div>
+
+      <div class="lcdList">
+        ${tracks.map((t, i) => `
+          <div class="lcdListItem ${i === player.index ? "is-active" : ""}" data-index="${i}">
+            <div class="lcdListTitle">${t.title}</div>
+            <div class="lcdListArtist">${t.artist}</div>
+          </div>
+        `).join("")}
+      </div>
+
+      ${renderOSD()}
+    </div>
+  `;
+
+  bindLibraryUI();
+
+  if (typeof bindDisplayUI === "function") {
+    bindDisplayUI();
+  }
+
+  if (typeof applyDisplayState === "function") {
+    applyDisplayState();
+  }
+}
+
+function bindLibraryUI() {
+  const items = root.querySelectorAll(".lcdListItem");
+
+  items.forEach((el) => {
+    el.addEventListener("click", () => {
+      const index = Number(el.dataset.index);
+
+      if (typeof loadTrack === "function") {
+        loadTrack(index, true);
+      }
+
+      state.screen = "player";
+      renderPlayer();
+    });
+  });
+}
+
+function renderCurrentScreen() {
+  if (state.screen === "menu") {
+    renderMenu();
+    return;
+  }
+
+  if (state.screen === "library") {
+    renderLibrary();
+    return;
+  }
+
+  renderPlayer();
+}
+
+renderPlayer();
   const metaText =
     typeof player !== "undefined" &&
     player &&
