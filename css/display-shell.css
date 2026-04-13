@@ -318,8 +318,10 @@
   color:var(--lcd-ink-color);
   font-size:.82em;
   white-space:nowrap;
+  overflow:hidden;
+  display:block;
+  max-width:120px;
 }
-
 .lcdMenuArrow{
   min-width:12px;
   text-align:right;
@@ -658,4 +660,27 @@
   height:18px;
   display:block;
   color:var(--lcd-ink-color);
+}
+/* ===== MARQUEE (scroll text) ===== */
+
+.marquee{
+  display:block;
+  overflow:hidden;
+  position:relative;
+}
+
+.marqueeInner{
+  display:inline-block;
+  white-space:nowrap;
+  padding-right:30px; /* mezera mezi cykly */
+  animation: marqueeScroll 6s linear infinite;
+}
+
+@keyframes marqueeScroll{
+  0%{
+    transform:translateX(0);
+  }
+  100%{
+    transform:translateX(-50%);
+  }
 }
