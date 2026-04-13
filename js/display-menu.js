@@ -99,10 +99,13 @@ function menuValueFor(item) {
 
   if (key === "main") {
     if (item.action === "playmode") {
-      if (state.shuffle) return "shuffle";
-      if (state.repeat === "all") return "repeat";
-      if (state.repeat === "one") return "1";
-      return "normal";
+      const parts = [];
+
+      if (state.shuffle) parts.push("shuffle");
+      if (state.repeat === "all") parts.push("repeat");
+      if (state.repeat === "one") parts.push("1");
+
+      return parts.length ? parts.join(" + ") : "normal";
     }
   }
 
@@ -352,8 +355,7 @@ function menuSelect() {
   }
 
   if (item.action === "playmode-shuffle") {
-    state.shuffle = true;
-    state.repeat = "off";
+    state.shuffle = !state.shuffle;
     ui.stack = ["main"];
     ui.index = 2;
     renderMenu();
@@ -361,8 +363,7 @@ function menuSelect() {
   }
 
   if (item.action === "playmode-repeat-all") {
-    state.shuffle = false;
-    state.repeat = "all";
+    state.repeat = state.repeat === "all" ? "off" : "all";
     ui.stack = ["main"];
     ui.index = 2;
     renderMenu();
@@ -370,8 +371,7 @@ function menuSelect() {
   }
 
   if (item.action === "playmode-repeat-one") {
-    state.shuffle = false;
-    state.repeat = "one";
+    state.repeat = state.repeat === "one" ? "off" : "one";
     ui.stack = ["main"];
     ui.index = 2;
     renderMenu();
