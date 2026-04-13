@@ -430,6 +430,7 @@
     transform:translate(-50%,-50%) scale(1);
   }
 }
+
 /* ===== STRONG MENU FEEL ===== */
 
 .lcd{
@@ -447,17 +448,14 @@
   }
 }
 
-/* aktivní položka víc viditelná */
 .lcdMenuItem.is-active{
   transform:translateX(4px);
 }
 
-/* hover */
 .lcdMenuItem:hover{
   transform:translateX(2px);
 }
 
-/* jemný „glow“ */
 .theme-blue .lcdMenuItem.is-active{
   box-shadow:inset 0 0 8px rgba(0,120,255,.15);
 }
@@ -474,6 +472,7 @@
   transform:translateX(0);
   opacity:1;
 }
+
 .lcdList{
   padding:10px;
   display:flex;
@@ -500,6 +499,7 @@
   font-size:10px;
   opacity:.6;
 }
+
 @media (max-width: 480px){
   .lcd{
     padding:10px 10px 10px;
@@ -594,27 +594,6 @@
     border-width:1.5px;
   }
 }
-.lcdStateIcon{
-  width:22px;
-  height:22px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.lcdGlyph{
-  width:22px;
-  height:22px;
-  fill:var(--lcd-ink-color);
-  display:block;
-}
-.lcdStateCluster{
-  display:flex;
-  align-items:center;
-  gap:5px;
-  min-width:64px;
-  height:22px;
-}
 
 .lcdStateIcon{
   width:24px;
@@ -633,6 +612,14 @@
   display:block;
 }
 
+.lcdStateCluster{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  min-width:64px;
+  height:22px;
+}
+
 .lcdModeSlot{
   width:18px;
   height:18px;
@@ -648,29 +635,5 @@
   width:18px;
   height:18px;
   display:block;
-  color:var(--lcd-ink-color);
-}
-
-.lcdModeOneWrap{
-  width:18px;
-  height:18px;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.lcdModeOneWrap .lcdModeGlyph{
-  width:18px;
-  height:18px;
-}
-
-.lcdModeOne{
-  position:absolute;
-  right:-2px;
-  bottom:-2px;
-  font-size:10px;
-  line-height:1;
-  font-weight:700;
   color:var(--lcd-ink-color);
 }
