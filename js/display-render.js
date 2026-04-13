@@ -44,28 +44,35 @@ function renderShuffleStateIcon() {
 function renderRepeatStateIcon() {
   if (typeof state === "undefined" || state.repeat === "off") return "";
 
-  const repeatBase = `
-    <svg class="lcdModeGlyph" viewBox="-20 0 260 240" aria-hidden="true">
-      <path d="M 50 18 H 190 A 30 30 0 0 1 220 48 V 160 A 30 30 0 0 1 190 190 H 88"
-        fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M 20 48 A 30 30 0 0 1 50 18"
-        fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M 20 48 V 132"
-        fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"/>
-      <path d="M -13 132 L 20 176 L 53 132 Z" fill="currentColor"/>
-    </svg>
-  `;
-
   if (state.repeat === "all") {
-    return repeatBase;
+    return `
+      <svg class="lcdModeGlyph" viewBox="-20 0 260 240" aria-hidden="true">
+        <path d="M 50 18 H 190 A 30 30 0 0 1 220 48 V 160 A 30 30 0 0 1 190 190 H 88"
+          fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M 20 48 A 30 30 0 0 1 50 18"
+          fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M 20 48 V 132"
+          fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"/>
+        <path d="M -13 132 L 20 176 L 53 132 Z"
+          fill="currentColor"/>
+      </svg>
+    `;
   }
 
   if (state.repeat === "one") {
     return `
-      <div class="lcdModeOneWrap">
-        ${repeatBase}
-        <span class="lcdModeOne">1</span>
-      </div>
+      <svg class="lcdModeGlyph" viewBox="-20 0 260 240" aria-hidden="true">
+        <path d="M 50 18 H 190 A 30 30 0 0 1 220 48 V 160 A 30 30 0 0 1 190 190 H 88"
+          fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M 20 48 A 30 30 0 0 1 50 18"
+          fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M 20 48 V 132"
+          fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"/>
+        <path d="M -13 132 L 20 176 L 53 132 Z"
+          fill="currentColor"/>
+        <path d="M 108 76 L 120 76 V 132"
+          fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"/>
+      </svg>
     `;
   }
 
