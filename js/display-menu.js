@@ -233,12 +233,14 @@ function renderMenu() {
             <span class="lcdMenuLabel">${item.label}</span>
             <span class="lcdMenuSide">
               <span class="lcdMenuValue">
-  <span class="marquee">
-    <span class="marqueeInner">
-      ${menuValueFor(item)}
-    </span>
-  </span>
-</span>
+                <span class="marquee">
+                  <span class="marqueeInner">
+                    <span class="marqueeText">${menuValueFor(item)}</span>
+                    <span class="marqueeGap"></span>
+                    <span class="marqueeText">${menuValueFor(item)}</span>
+                  </span>
+                </span>
+              </span>
               <span class="lcdMenuArrow">${isSubmenuAction(item.action) ? "›" : ""}</span>
             </span>
           </button>
@@ -361,18 +363,19 @@ function menuSelect() {
   }
 
   if (item.action === "playmode-shuffle") {
-  const nextShuffle = !state.shuffle;
-  state.shuffle = nextShuffle;
+    const nextShuffle = !state.shuffle;
+    state.shuffle = nextShuffle;
 
-  if (nextShuffle && state.repeat === "one") {
-    state.repeat = "off";
+    if (nextShuffle && state.repeat === "one") {
+      state.repeat = "off";
+    }
+
+    ui.stack = ["main"];
+    ui.index = 2;
+    renderMenu();
+    return;
   }
 
-  ui.stack = ["main"];
-  ui.index = 2;
-  renderMenu();
-  return;
-}
   if (item.action === "playmode-repeat-all") {
     state.repeat = state.repeat === "all" ? "off" : "all";
     ui.stack = ["main"];
@@ -382,18 +385,18 @@ function menuSelect() {
   }
 
   if (item.action === "playmode-repeat-one") {
-  const nextRepeatOne = state.repeat === "one" ? "off" : "one";
-  state.repeat = nextRepeatOne;
+    const nextRepeatOne = state.repeat === "one" ? "off" : "one";
+    state.repeat = nextRepeatOne;
 
-  if (nextRepeatOne === "one") {
-    state.shuffle = false;
+    if (nextRepeatOne === "one") {
+      state.shuffle = false;
+    }
+
+    ui.stack = ["main"];
+    ui.index = 2;
+    renderMenu();
+    return;
   }
-
-  ui.stack = ["main"];
-  ui.index = 2;
-  renderMenu();
-  return;
-}
 
   if (item.action === "theme-classic") {
     setDisplayMode("classic");
