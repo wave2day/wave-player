@@ -5,6 +5,27 @@ function applyTheme() {
   root.className = `displayRoot theme-${state.theme}`;
 }
 
+function renderPlaybackStateIcon() {
+  const isPlaying =
+    typeof player !== "undefined" &&
+    player.audio &&
+    !player.audio.paused;
+
+  if (isPlaying) {
+    return `
+      <svg class="lcdGlyph" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7 5v14l11-7z"></path>
+      </svg>
+    `;
+  }
+
+  return `
+    <svg class="lcdGlyph" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 5h4v14H7zM13 5h4v14h-4z"></path>
+      </svg>
+  `;
+}
+
 function renderVolumeIcon() {
   const level = state.muted
     ? 0
@@ -74,7 +95,9 @@ function renderPlayer() {
   root.innerHTML = `
     <div class="lcd">
       <div class="lcdTopbar">
-        <div class="lcdPlay"></div>
+        <div class="lcdStateIcon">
+          ${renderPlaybackStateIcon()}
+        </div>
 
         <div class="lcdArtistTop" data-text="${state.nowPlaying.artist}">
           ${state.nowPlaying.artist}
@@ -131,6 +154,63 @@ function renderPlayer() {
   }
 }
 
+function renderLibrary() {
+  if (!root || typeof player === "undefined") return;
+
+  state.screen = "library";
+  applyTheme();
+
+  const tracks = player.playlist || [];
+
+  root.innerHTML = `
+    <div class="lcd">
+      <div class="lcdTopbar">
+        <div class="lcdStateIcon"></div>
+        <div class="lcdArtistTop">Library</div>
+        ${renderVolumeIcon()}
+      </div>
+
+      <div class="lcdList">
+        ${tracks.map((t, i) => `
+          <div class="lcdListItem ${i === player.index ? "is-active" : ""}" data-index="${i}">
+            <div class="lcdListTitle">${t.title}</div>
+            <div class="lcdListArtist">${t.artist}</div>
+          </div>
+        `).join("")}
+      </div>
+
+      ${renderOSD()}
+    </div>
+  `;
+
+  bindLibraryUI();
+
+  if (typeof bindDisplayUI === "function") {
+    bindDisplayUI();
+  }
+
+  if (typeof applyDisplayState === "function") {
+    applyDisplayState();
+  }
+}
+
+function bindLibraryUI() {
+  const items = root.querySelectorAll(".lcdListItem");
+
+  items.forEach((el) => {
+    el.addEventListener("click", () => {
+      const index = Number(el.dataset.index);
+
+      if (typeof loadTrack === "function") {
+        loadTrack(index, true);
+      }
+
+      state.screen = "player";
+      renderPlayer();
+    });
+  });
+}
+
 function renderCurrentScreen() {
   if (state.screen === "menu") {
     renderMenu();
@@ -146,46 +226,3 @@ function renderCurrentScreen() {
 }
 
 renderPlayer();
-function renderLibrary() {
-  if (!root || typeof player === "undefined") return;
-
-  state.screen = "library";
-  applyTheme();
-
-  const tracks = player.playlist || [];
-
-  root.innerHTML = `
-    <div class="lcd">
-      <div class="lcdTopbar">
-        <div class="lcdTitle">Library</div>
-      </div>
-
-      <div class="lcdList">
-        ${tracks.map((t, i) => `
-          <div class="lcdListItem ${i === player.index ? "is-active" : ""}" data-index="${i}">
-            <div class="lcdListTitle">${t.title}</div>
-            <div class="lcdListArtist">${t.artist}</div>
-          </div>
-        `).join("")}
-      </div>
-    </div>
-  `;
-
-  bindLibraryUI();
-}
-function bindLibraryUI() {
-  const items = root.querySelectorAll(".lcdListItem");
-
-  items.forEach(el => {
-    el.addEventListener("click", () => {
-      const index = Number(el.dataset.index);
-
-      if (typeof loadTrack === "function") {
-        loadTrack(index, true);
-      }
-
-      state.screen = "player";
-      renderPlayer();
-    });
-  });
-}
