@@ -22,8 +22,54 @@ function renderPlaybackStateIcon() {
   return `
     <svg class="lcdGlyph" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M7 5h4v14H7zM13 5h4v14h-4z"></path>
-      </svg>
+    </svg>
   `;
+}
+
+function renderShuffleStateIcon() {
+  if (typeof state === "undefined" || !state.shuffle) return "";
+
+  return `
+    <svg class="lcdModeGlyph" viewBox="-20 0 260 240" aria-hidden="true">
+      <path d="M 88 18 H 190 A 30 30 0 0 1 220 48 V 74 A 30 30 0 0 1 190 104 H 148"
+        fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 92 104 H 50 A 30 30 0 0 0 20 134 V 160 A 30 30 0 0 0 50 190 H 152"
+        fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 70 71 L 70 137 L 114 104 Z" fill="currentColor"/>
+      <path d="M 170 71 L 170 137 L 126 104 Z" fill="currentColor"/>
+    </svg>
+  `;
+}
+
+function renderRepeatStateIcon() {
+  if (typeof state === "undefined" || state.repeat === "off") return "";
+
+  const repeatBase = `
+    <svg class="lcdModeGlyph" viewBox="-20 0 260 240" aria-hidden="true">
+      <path d="M 50 18 H 190 A 30 30 0 0 1 220 48 V 160 A 30 30 0 0 1 190 190 H 88"
+        fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 20 48 A 30 30 0 0 1 50 18"
+        fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 20 48 V 132"
+        fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"/>
+      <path d="M -13 132 L 20 176 L 53 132 Z" fill="currentColor"/>
+    </svg>
+  `;
+
+  if (state.repeat === "all") {
+    return repeatBase;
+  }
+
+  if (state.repeat === "one") {
+    return `
+      <div class="lcdModeOneWrap">
+        ${repeatBase}
+        <span class="lcdModeOne">1</span>
+      </div>
+    `;
+  }
+
+  return "";
 }
 
 function renderVolumeIcon() {
@@ -78,6 +124,22 @@ function renderOSD() {
   return "";
 }
 
+function renderStateCluster() {
+  return `
+    <div class="lcdStateCluster">
+      <div class="lcdStateIcon">
+        ${renderPlaybackStateIcon()}
+      </div>
+      <div class="lcdModeSlot">
+        ${renderShuffleStateIcon()}
+      </div>
+      <div class="lcdModeSlot">
+        ${renderRepeatStateIcon()}
+      </div>
+    </div>
+  `;
+}
+
 function renderPlayer() {
   if (!root) return;
 
@@ -95,9 +157,7 @@ function renderPlayer() {
   root.innerHTML = `
     <div class="lcd">
       <div class="lcdTopbar">
-        <div class="lcdStateIcon">
-          ${renderPlaybackStateIcon()}
-        </div>
+        ${renderStateCluster()}
 
         <div class="lcdArtistTop" data-text="${state.nowPlaying.artist}">
           ${state.nowPlaying.artist}
@@ -165,7 +225,7 @@ function renderLibrary() {
   root.innerHTML = `
     <div class="lcd">
       <div class="lcdTopbar">
-        <div class="lcdStateIcon"></div>
+        ${renderStateCluster()}
         <div class="lcdArtistTop">Library</div>
         ${renderVolumeIcon()}
       </div>
