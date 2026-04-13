@@ -302,7 +302,6 @@
   min-width:0;
   white-space:nowrap;
   overflow:hidden;
-  text-overflow:ellipsis;
 }
 
 .lcdMenuSide{
@@ -322,6 +321,7 @@
   display:block;
   max-width:120px;
 }
+
 .lcdMenuArrow{
   min-width:12px;
   text-align:right;
@@ -661,19 +661,33 @@
   display:block;
   color:var(--lcd-ink-color);
 }
+
 /* ===== MARQUEE (scroll text) ===== */
 
 .marquee{
   display:block;
   overflow:hidden;
   position:relative;
+  width:100%;
 }
 
 .marqueeInner{
+  display:inline-flex;
+  align-items:center;
+  white-space:nowrap;
+  width:max-content;
+  animation:marqueeScroll 7s linear infinite;
+}
+
+.marqueeText{
   display:inline-block;
   white-space:nowrap;
-  padding-right:30px; /* mezera mezi cykly */
-  animation: marqueeScroll 6s linear infinite;
+}
+
+.marqueeGap{
+  display:inline-block;
+  width:24px;
+  flex:0 0 24px;
 }
 
 @keyframes marqueeScroll{
@@ -681,6 +695,6 @@
     transform:translateX(0);
   }
   100%{
-    transform:translateX(-50%);
+    transform:translateX(calc(-50% - 12px));
   }
 }
