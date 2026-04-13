@@ -500,3 +500,97 @@
   font-size:10px;
   opacity:.6;
 }
+@media (max-width: 480px){
+  .lcd{
+    padding:10px 10px 10px;
+  }
+
+  .lcdTopbar{
+    height:24px;
+    grid-template-columns:18px 1fr 38px;
+    column-gap:6px;
+    padding-bottom:4px;
+    font-size:12px;
+  }
+
+  .lcdPlay{
+    border-left:10px solid var(--lcd-ink-color);
+    border-top:5px solid transparent;
+    border-bottom:5px solid transparent;
+  }
+
+  .lcdVolumeBtn{
+    width:38px;
+    height:18px;
+    gap:1px;
+  }
+
+  .lcdVolumeBar{
+    width:3px;
+    border-width:1.5px;
+  }
+
+  .lcdVolumeBar--1{ height:5px; }
+  .lcdVolumeBar--2{ height:7px; }
+  .lcdVolumeBar--3{ height:9px; }
+  .lcdVolumeBar--4{ height:11px; }
+  .lcdVolumeBar--5{ height:13px; }
+  .lcdVolumeBar--6{ height:15px; }
+
+  .lcdMeta{
+    padding-top:4px;
+    font-size:11px;
+  }
+
+  .lcdCenter{
+    padding-top:8px;
+    gap:4px;
+  }
+
+  .lcdTitle{
+    font-size:20px;
+  }
+
+  .lcdArtist,
+  .lcdAlbum{
+    font-size:18px;
+  }
+
+  .lcdProgressWrap{
+    padding:10px 4px 0;
+  }
+
+  .lcdProgress{
+    height:14px;
+  }
+
+  .lcdTimes{
+    padding-top:6px;
+    font-size:13px;
+  }
+
+  .lcdMenuItem{
+    padding:5px 6px;
+    font-size:17px;
+  }
+
+  .lcdOsd{
+    min-width:130px;
+    padding:10px 12px;
+  }
+
+  .lcdOsdTitle{
+    font-size:12px;
+  }
+
+  .lcdOsdValue,
+  .lcdOsdMute{
+    font-size:18px;
+  }
+
+  .lcdOsdBar{
+    width:6px;
+    height:14px;
+    border-width:1.5px;
+  }
+}
