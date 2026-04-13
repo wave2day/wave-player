@@ -121,6 +121,182 @@ function loadTrack(index, autoplay = false) {
   }
 }
 
+function getRandomNextIndex() {
+  if (player.playlist.length <= 1) return player.index;
+
+  let next = player.index;
+  while (next === player.index) {
+    next = Math.floor(Math.random() * player.playlist.length);
+  }
+  return next;
+}
+
+function togglePlayPause() {
+  if (!player.isReady) return;
+
+  if (player.audio.paused) {
+    player.audio.play().catch((err) => {
+      console.warn("Audio play failed", err);
+    });
+  } else {
+    player.audio.pause();
+  }
+
+  refreshPlayerUI();
+}
+
+function nextTrack(forceAutoplay = true) {
+  if (!player.playlist.length) return;
+
+  let next;
+
+  if (typeof state !== "undefined" && state.shuffle) {
+    next = getRandomNextIndex();
+  } else {
+    next = player.index + 1;
+
+    if (next >= player.playlist.length) {
+      if (typeof state !== "undefined" && state.repeat === "all") {
+        next = 0;
+      } else {
+        player.audio.pause();
+        player.audio.currentTime = 0;
+        refreshPlayerUI();
+        return;
+      }
+    }
+  }
+
+  loadTrack(next, forceAutoplay);
+}
+
+function prevTrack(forceAutoplay = true) {
+  if (!player.playlist.length) return;
+
+  let prev;
+
+  if (typeof state !== "undefined" && state.shuffle) {
+    prev = getRandomNextIndex();
+  } else {
+    prev = player.index - 1;
+
+    if (prev < 0) {
+      prev = player.playlist.length - 1;
+    }
+  }
+
+  loadTrack(prev, forceAutoplay);
+}
+
+function seekToRatio(ratio) {
+  const duration = player.audio.duration || getCurrentTrack()?.duration || 0;
+  if (!duration) return;
+
+  const safeRatio = Math.max(0, Math.min(1, ratio));
+  player.audio.currentTime = duration * safeRatio;
+
+  syncNowPlayingTimes();
+  updateProgressUI();
+  updateTimesUI();
+}
+
+player.audio.preload = "metadata";
+
+player.audio.addEventListener("loadedmetadata", () => {
+  syncNowPlayingTimes();
+  refreshPlayerUI();
+});
+
+player.audio.addEventListener("timeupdate", () => {
+  syncNowPlayingTimes();
+  updateProgressUI();
+  updateTimesUI();
+});
+
+player.audio.addEventListener("play", () => {
+  refreshPlayerUI();
+});
+
+player.audio.addEventListener("pause", () => {
+  refreshPlayerUI();
+});
+
+player.audio.addEventListener("ended", () => {
+  if (typeof state !== "undefined" && state.repeat === "one") {
+    loadTrack(player.index, true);
+    return;
+  }
+
+  nextTrack(true);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  syncVolumeToAudio();
+
+  if (typeof playlistData !== "undefined") {
+    loadPlaylist(playlistData);
+  } else {
+    console.warn("playlistData is not defined");
+  }
+});  if (times.length < 2 || typeof state === "undefined") return;
+
+  times[0].textContent = state.nowPlaying.time;
+  times[1].textContent = state.nowPlaying.remaining;
+}
+
+function refreshPlayerUI() {
+  syncNowPlayingMeta();
+  syncNowPlayingTimes();
+
+  if (typeof rerenderActiveScreen === "function") {
+    rerenderActiveScreen();
+  } else if (typeof renderPlayer === "function") {
+    renderPlayer();
+  }
+
+  updateProgressUI();
+  updateTimesUI();
+}
+
+function loadPlaylist(data) {
+  if (!data || !Array.isArray(data.tracks) || !data.tracks.length) {
+    player.playlist = [];
+    player.index = 0;
+    player.isReady = false;
+    return;
+  }
+
+  player.playlist = data.tracks.slice();
+  player.index = 0;
+  player.isReady = true;
+
+  loadTrack(0, false);
+}
+
+function loadTrack(index, autoplay = false) {
+  if (!player.playlist.length) return;
+
+  const safeIndex = Math.max(0, Math.min(index, player.playlist.length - 1));
+  const track = player.playlist[safeIndex];
+  if (!track) return;
+
+  player.index = safeIndex;
+  player.audio.pause();
+  player.audio.currentTime = 0;
+  player.audio.src = track.audioUrl;
+  player.audio.load();
+
+  syncNowPlayingMeta();
+  syncNowPlayingTimes();
+  refreshPlayerUI();
+
+  if (autoplay) {
+    player.audio.play().catch((err) => {
+      console.warn("Audio play failed", err);
+    });
+  }
+}
+
 function togglePlayPause() {
   if (!player.isReady) return;
 
