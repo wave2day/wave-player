@@ -611,46 +611,49 @@
 .lcdStateCluster{
   display:flex;
   align-items:center;
-  gap:4px;
-  min-width:54px;
+  gap:5px;
+  min-width:64px;
+  height:22px;
 }
 
 .lcdStateIcon{
-  width:22px;
-  height:22px;
+  width:24px;
+  height:24px;
   display:flex;
   align-items:center;
   justify-content:center;
   color:var(--lcd-ink-color);
+  transform:translateY(1px);
 }
 
 .lcdGlyph{
-  width:22px;
-  height:22px;
+  width:24px;
+  height:24px;
   fill:currentColor;
   display:block;
 }
 
 .lcdModeSlot{
-  width:16px;
-  height:16px;
+  width:18px;
+  height:18px;
   display:flex;
   align-items:center;
   justify-content:center;
   color:var(--lcd-ink-color);
   position:relative;
+  transform:translateY(1px);
 }
 
 .lcdModeGlyph{
-  width:16px;
-  height:16px;
+  width:18px;
+  height:18px;
   display:block;
   color:var(--lcd-ink-color);
 }
 
 .lcdModeOneWrap{
-  width:16px;
-  height:16px;
+  width:18px;
+  height:18px;
   position:relative;
   display:flex;
   align-items:center;
@@ -658,15 +661,15 @@
 }
 
 .lcdModeOneWrap .lcdModeGlyph{
-  width:16px;
-  height:16px;
+  width:18px;
+  height:18px;
 }
 
 .lcdModeOne{
   position:absolute;
   right:-2px;
-  bottom:-3px;
-  font-size:9px;
+  bottom:-2px;
+  font-size:10px;
   line-height:1;
   font-weight:700;
   color:var(--lcd-ink-color);
