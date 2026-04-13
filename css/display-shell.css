@@ -294,30 +294,37 @@
     background .12s ease,
     color .12s ease,
     transform .12s ease;
+  flex-wrap:nowrap;
 }
 
 .lcdMenuLabel{
   flex:1;
   min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .lcdMenuSide{
   display:flex;
   align-items:center;
-  gap:10px;
-  margin-left:12px;
+  gap:8px;
+  margin-left:8px;
   flex-shrink:0;
+  white-space:nowrap;
 }
 
 .lcdMenuValue{
   color:var(--lcd-ink-color);
   font-size:.82em;
+  white-space:nowrap;
 }
 
 .lcdMenuArrow{
   min-width:12px;
   text-align:right;
   color:var(--lcd-ink-color);
+  flex-shrink:0;
 }
 
 .lcdMenuItem:focus{
@@ -339,6 +346,16 @@
 
 .theme-blue .lcdMenuItem.is-active{
   background:#0b2438;
+  color:#9fd4ff;
+}
+
+.theme-classic .lcdMenuItem.is-active .lcdMenuValue,
+.theme-classic .lcdMenuItem.is-active .lcdMenuArrow{
+  color:#fff;
+}
+
+.theme-blue .lcdMenuItem.is-active .lcdMenuValue,
+.theme-blue .lcdMenuItem.is-active .lcdMenuArrow{
   color:#9fd4ff;
 }
 
@@ -572,6 +589,11 @@
   .lcdMenuItem{
     padding:5px 6px;
     font-size:17px;
+  }
+
+  .lcdMenuSide{
+    gap:6px;
+    margin-left:6px;
   }
 
   .lcdOsd{
