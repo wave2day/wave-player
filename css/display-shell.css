@@ -60,6 +60,18 @@
   pointer-events:auto;
 }
 
+/* desktop: menu klikatelné myší */
+@media (hover: hover) and (pointer: fine){
+  .lcdMenuItem{
+    pointer-events:auto;
+  }
+}
+
+.lcdVolumeBtn,
+.lcdProgress{
+  pointer-events:auto;
+}
+
 /* ===== SHARED LCD LAYOUT ===== */
 
 .lcd{
