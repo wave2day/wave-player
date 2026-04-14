@@ -1,5 +1,5 @@
 const playerBody = document.querySelector(".iBody");
-const dragHandle = document.querySelector(".iDisplay");
+const dragHandle = document.querySelector(".iBody");
 
 if (playerBody && dragHandle) {
   let dragging = false;
@@ -14,6 +14,15 @@ if (playerBody && dragHandle) {
   }
 
   function onPointerDown(e) {
+    const target = e.target;
+
+    if (
+      target.closest(".iDisplay") ||
+      target.closest(".iWheel")
+    ) {
+      return;
+    }
+
     dragging = true;
     startX = e.clientX;
     startY = e.clientY;
