@@ -15,6 +15,10 @@ function getVolumeButton() {
   return displayRoot ? displayRoot.querySelector('[data-role="volume-button"]') : null;
 }
 
+function getProgressBar() {
+  return displayRoot ? displayRoot.querySelector(".lcdProgress") : null;
+}
+
 function getOSDRoot() {
   return displayRoot ? displayRoot.querySelector(".lcdOsd") : null;
 }
@@ -348,24 +352,41 @@ function bindDisplayUI() {
   if (!displayRoot) return;
 
   const volumeBtn = displayRoot.querySelector('[data-role="volume-button"]');
-  if (!volumeBtn) return;
+  if (volumeBtn) {
+    volumeBtn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-  volumeBtn.onclick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+      if (volumeClickTimer) {
+        clearTimeout(volumeClickTimer);
+        volumeClickTimer = null;
+        handleVolumeButtonDoubleClick();
+        return;
+      }
 
-    if (volumeClickTimer) {
-      clearTimeout(volumeClickTimer);
-      volumeClickTimer = null;
-      handleVolumeButtonDoubleClick();
-      return;
-    }
+      volumeClickTimer = setTimeout(() => {
+        volumeClickTimer = null;
+        handleVolumeButtonSingleClick();
+      }, 230);
+    };
+  }
 
-    volumeClickTimer = setTimeout(() => {
-      volumeClickTimer = null;
-      handleVolumeButtonSingleClick();
-    }, 230);
-  };
+  const progress = getProgressBar();
+  if (progress) {
+    progress.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const rect = progress.getBoundingClientRect();
+      if (!rect.width) return;
+
+      const ratio = (e.clientX - rect.left) / rect.width;
+
+      if (typeof seekToRatio === "function") {
+        seekToRatio(ratio);
+      }
+    };
+  }
 }
 
 // ===== WHEEL =====
