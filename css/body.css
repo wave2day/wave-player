@@ -119,10 +119,6 @@ mask-composite: exclude;
   );
 }
 
-.iDisplay{
-  touch-action:none;
-}
-
 .iBody,
 .iBody *{
   -webkit-user-select:none;
