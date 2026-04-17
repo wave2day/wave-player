@@ -1,5 +1,7 @@
 .iWheel{
   --iconOrbit:25%;
+  --zoneSize:56px;
+  position:relative;
 }
 
 .iWheelZone,
@@ -11,8 +13,8 @@
 }
 
 .iWheelZone{
-  width:100%;
-  height:100%;
+  width:var(--zoneSize);
+  height:var(--zoneSize);
   margin:0;
   padding:0;
   appearance:none;
@@ -21,25 +23,30 @@
   border:none;
   outline:none;
   box-shadow:none;
-  border-radius:0;
+  border-radius:50%;
   cursor:pointer;
   z-index:6;
 }
 
+/* kruhové zóny kolem symbolů */
 .iWheelZone--top{
-  clip-path:polygon(50% 50%, 22% 8%, 78% 8%);
+  left:50%;
+  top:25%;
 }
 
 .iWheelZone--right{
-  clip-path:polygon(50% 50%, 92% 22%, 92% 78%);
+  left:75%;
+  top:50%;
 }
 
 .iWheelZone--bottom{
-  clip-path:polygon(50% 50%, 22% 92%, 78% 92%);
+  left:50%;
+  top:75%;
 }
 
 .iWheelZone--left{
-  clip-path:polygon(50% 50%, 8% 22%, 8% 78%);
+  left:25%;
+  top:50%;
 }
 
 .iWheelIcon{
@@ -53,21 +60,25 @@
 }
 
 .iWheelIcon--top{
+  left:50%;
   top:25%;
 }
 
 .iWheelIcon--right{
   left:75%;
+  top:50%;
   font-size:20px;
 }
 
 .iWheelIcon--bottom{
+  left:50%;
   top:75%;
   font-size:20px;
 }
 
 .iWheelIcon--left{
   left:25%;
+  top:50%;
   font-size:20px;
 }
 
