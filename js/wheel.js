@@ -83,13 +83,23 @@ function canHandleWheelRotation() {
     typeof state !== "undefined" &&
     (
       ui.open ||
-      state.volumeMode
+      state.volumeMode ||
+      state.screen === "library"
     )
   );
 }
 
 function applyWheelStep(direction) {
   if (typeof state === "undefined") return;
+
+  if (state.screen === "library") {
+    if (direction > 0) {
+      if (typeof libraryDown === "function") libraryDown();
+    } else {
+      if (typeof libraryUp === "function") libraryUp();
+    }
+    return;
+  }
 
   /* CW = dolů v menu, hlasitost +1
      CCW = nahoru v menu, hlasitost -1 */
@@ -297,6 +307,13 @@ if (wheelCenterBtn) {
     if (typeof state !== "undefined" && state.volumeMode) {
       if (typeof closeVolumeMode === "function") {
         closeVolumeMode();
+      }
+      return;
+    }
+
+    if (typeof state !== "undefined" && state.screen === "library") {
+      if (typeof librarySelect === "function") {
+        librarySelect();
       }
       return;
     }
