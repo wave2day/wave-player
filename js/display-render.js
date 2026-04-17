@@ -221,6 +221,41 @@ function renderPlayer() {
   }
 }
 
+function ensureLibrarySelectionVisible() {
+  const active = root ? root.querySelector(".lcdListItem.is-active") : null;
+  if (!active) return;
+
+  active.scrollIntoView({
+    block: "nearest",
+    inline: "nearest"
+  });
+}
+
+function libraryUp() {
+  if (!root || typeof player === "undefined" || !player.playlist.length) return;
+
+  player.index = (player.index - 1 + player.playlist.length) % player.playlist.length;
+  renderLibrary();
+}
+
+function libraryDown() {
+  if (!root || typeof player === "undefined" || !player.playlist.length) return;
+
+  player.index = (player.index + 1) % player.playlist.length;
+  renderLibrary();
+}
+
+function librarySelect() {
+  if (!player.playlist.length) return;
+
+  if (typeof loadTrack === "function") {
+    loadTrack(player.index, true);
+  }
+
+  state.screen = "player";
+  renderPlayer();
+}
+
 function renderLibrary() {
   if (!root || typeof player === "undefined") return;
 
@@ -251,6 +286,7 @@ function renderLibrary() {
   `;
 
   bindLibraryUI();
+  ensureLibrarySelectionVisible();
 
   if (typeof bindDisplayUI === "function") {
     bindDisplayUI();
