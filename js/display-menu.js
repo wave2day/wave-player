@@ -215,53 +215,6 @@ function bindMenuClicks() {
   });
 }
 
-function getInitialIndexForMenu(menuKey) {
-  if (menuKey === "theme") {
-    return state.theme === "blue" ? 1 : 0;
-  }
-
-  if (menuKey === "preset") {
-    if (state.preset === "normal") return 0;
-    if (state.preset === "dim") return 1;
-    if (state.preset === "boost") return 2;
-    if (state.preset === "washed") return 3;
-    return 0;
-  }
-
-  if (menuKey === "backlight") {
-    const value = String(state.backlight);
-    if (value === "0.8") return 0;
-    if (value === "1" || value === "1.0") return 1;
-    if (value === "1.2") return 2;
-    return 1;
-  }
-
-  if (menuKey === "ink") {
-    const value = String(state.ink);
-    if (value === "0.8") return 0;
-    if (value === "1" || value === "1.0") return 1;
-    if (value === "1.2") return 2;
-    return 1;
-  }
-
-  if (menuKey === "eq") {
-    if (state.eq === "flat") return 0;
-    if (state.eq === "soft") return 1;
-    if (state.eq === "punch") return 2;
-    if (state.eq === "bright") return 3;
-    return 0;
-  }
-
-  if (menuKey === "playmode") {
-    if (state.repeat === "one") return 3;
-    if (state.repeat === "all") return 2;
-    if (state.shuffle) return 1;
-    return 0;
-  }
-
-  return 0;
-}
-
 // ===== RENDER =====
 
 function renderMenu() {
@@ -369,7 +322,7 @@ function menuBack() {
 
   if (ui.stack.length > 1) {
     ui.stack.pop();
-    ui.index = getInitialIndexForMenu(currentMenuKey());
+    ui.index = 0;
     renderMenu();
     return;
   }
@@ -385,7 +338,7 @@ function menuSelect() {
 
   if (isSubmenuAction(item.action)) {
     ui.stack.push(item.action);
-    ui.index = getInitialIndexForMenu(item.action);
+    ui.index = 0;
     renderMenu();
     return;
   }

@@ -21,11 +21,11 @@ const state = {
   osd: null,
 
   nowPlaying: {
-    artist: "David Bowie",
-    title: "Seven",
-    album: "Hours",
+    artist: "",
+    title: "",
+    album: "",
     time: "0:00",
-    remaining: "-4:04"
+    remaining: "-0:00"
   }
 };
 

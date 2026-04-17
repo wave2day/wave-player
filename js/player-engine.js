@@ -230,12 +230,23 @@ player.audio.addEventListener("ended", () => {
   nextTrack(true);
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   syncVolumeToAudio();
 
-  if (typeof playlistData !== "undefined") {
+  try {
+    if (typeof loadPlaylistDataFromGitHub === "function") {
+      await loadPlaylistDataFromGitHub();
+    }
+
+    if (typeof buildPlaylistFromMetadata === "function") {
+      const readyPlaylist = await buildPlaylistFromMetadata(playlistData);
+      loadPlaylist(readyPlaylist);
+      return;
+    }
+
     loadPlaylist(playlistData);
-  } else {
-    console.warn("playlistData is not defined");
+  } catch (err) {
+    console.warn("Playlist init failed", err);
+    loadPlaylist(playlistData);
   }
 });
