@@ -17,6 +17,7 @@ const wheelState = {
 
 const WHEEL_STEP_DEG = 22;
 const WHEEL_THROTTLE_MS = 22;
+const PLAYER_SEEK_STEP = 10; // sekundy
 
 /* aktivní prstenec: jen oblast mezi středem a vnějším okrajem */
 const WHEEL_ACTIVE_INNER_RATIO = 0.30;
@@ -84,9 +85,25 @@ function canHandleWheelRotation() {
     (
       ui.open ||
       state.volumeMode ||
-      state.screen === "library"
+      state.screen === "library" ||
+      state.screen === "player"
     )
   );
+}
+
+function seekPlayerBy(seconds) {
+  if (typeof player === "undefined" || !player.audio) return;
+
+  const audio = player.audio;
+  const duration = audio.duration || 0;
+  if (!duration) return;
+
+  const nextTime = Math.max(0, Math.min(duration, (audio.currentTime || 0) + seconds));
+  audio.currentTime = nextTime;
+
+  if (typeof syncNowPlayingTimes === "function") syncNowPlayingTimes();
+  if (typeof updateProgressUI === "function") updateProgressUI();
+  if (typeof updateTimesUI === "function") updateTimesUI();
 }
 
 function applyWheelStep(direction) {
@@ -97,6 +114,15 @@ function applyWheelStep(direction) {
       if (typeof libraryDown === "function") libraryDown();
     } else {
       if (typeof libraryUp === "function") libraryUp();
+    }
+    return;
+  }
+
+  if (state.screen === "player" && !state.volumeMode && !(typeof ui !== "undefined" && ui.open)) {
+    if (direction > 0) {
+      seekPlayerBy(PLAYER_SEEK_STEP);
+    } else {
+      seekPlayerBy(-PLAYER_SEEK_STEP);
     }
     return;
   }
