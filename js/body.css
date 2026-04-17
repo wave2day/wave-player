@@ -1,0 +1,128 @@
+/* ===== PLAYER BODY ONLY ===== */
+
+.iBody{
+  width:var(--bodyW);
+  aspect-ratio:3 / 4;
+  border-radius:var(--bodyRadius);
+  position:relative;
+  overflow:hidden;
+  container-type:size;
+  isolation:isolate;
+
+  background:
+    radial-gradient(120% 140% at 50% 62%, var(--glassMilkA), transparent 62%),
+    radial-gradient(120% 160% at 50% 92%, var(--glassMilkB), transparent 58%),
+    radial-gradient(120% 140% at 28% 20%, var(--glassClearA), transparent 55%),
+    radial-gradient(140% 160% at 70% 74%, var(--glassClearB), transparent 60%),
+    rgba(255,255,255,.08);
+
+  box-shadow:
+    inset 0 18px 26px rgba(0,0,0,.24),
+    inset 0 -22px 30px rgba(255,255,255,.22),
+    0 26px 54px rgba(0,0,0,.20);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  --displayW: calc(100cqw - (var(--frameInset) * 2));
+  --displayH: calc(var(--displayW) * 3 / 4);
+  --displayBottom: calc(var(--frameInset) + var(--displayH));
+  --wheelSize: min(74cqw, 304px);
+}
+
+.iBody::before{
+  content:"";
+  position:absolute;
+  inset:12px;
+  border-radius:calc(var(--bodyRadius) - 6px);
+  pointer-events:none;
+  z-index:1;
+  background:
+    radial-gradient(70% 90% at 16% 18%,
+      rgba(255,255,255,.42) 0%,
+      rgba(255,255,255,.18) 35%,
+      transparent 72%),
+    radial-gradient(70% 90% at 84% 18%,
+      rgba(255,255,255,.42) 0%,
+      rgba(255,255,255,.18) 35%,
+      transparent 72%),
+    radial-gradient(44% 60% at 26% 30%,
+      rgba(255,255,255,.18) 0%,
+      transparent 72%),
+    radial-gradient(44% 60% at 74% 30%,
+      rgba(255,255,255,.18) 0%,
+      transparent 72%);
+  filter:blur(1.35px);
+  opacity:.95;
+}
+
+.iBody::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:var(--bodyRadius);
+  pointer-events:none;
+  z-index:2;
+  padding:var(--glassRingThickness);
+  filter:blur(var(--glassRimBlur));
+  opacity:.95;
+
+  background:
+    radial-gradient(72% 120% at var(--bleedX) var(--bleedY),
+      rgba(var(--rimTint), var(--bleedA)) 0%,
+      rgba(var(--rimTint), var(--bleedB)) 28%,
+      transparent 68%),
+    conic-gradient(from 210deg,
+      transparent 0 18%,
+      rgba(var(--rimTint), .09) 22%,
+      transparent 36%,
+      rgba(var(--rimTint), .045) 46%,
+      transparent 62%,
+      rgba(var(--rimTint), .032) 70%,
+      transparent 100%),
+    radial-gradient(140% 120% at 50% 120%,
+      var(--botRim1) 0%,
+      var(--botRim2) 22%,
+      transparent 52%),
+    radial-gradient(170% 120% at 50% -38%,
+      rgba(0,0,0,.30) 0%,
+      rgba(0,0,0,.12) 14%,
+      transparent var(--topRimFade));
+
+  -webkit-mask:
+  linear-gradient(#000 0 0) content-box,
+  linear-gradient(#000 0 0);
+
+mask:
+  linear-gradient(#000 0 0) content-box,
+  linear-gradient(#000 0 0);
+
+-webkit-mask-composite: xor;
+mask-composite: exclude;
+}
+.iBody,
+.iBody *{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.iBody{
+  position:fixed;
+  left:50%;
+  top:50%;
+  --drag-x: 0px;
+  --drag-y: 0px;
+  transform:translate(
+    calc(-50% + var(--drag-x)),
+    calc(-50% + var(--drag-y))
+  );
+}
+
+.iBody,
+.iBody *{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
+}
