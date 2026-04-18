@@ -1,6 +1,6 @@
 .iWheel{
   --iconOrbit:25%;
-  --zoneSize:75px;
+  --zoneSize:47px;
   position:relative;
 }
 
@@ -12,6 +12,7 @@
   transform:translate(-50%,-50%);
 }
 
+/* 4 samostatné klikací kruhy */
 .iWheelZone{
   width:var(--zoneSize);
   height:var(--zoneSize);
@@ -25,10 +26,39 @@
   box-shadow:none;
   border-radius:50%;
   cursor:pointer;
-  z-index:6;
+  z-index:11;
+  -webkit-tap-highlight-color:transparent;
 }
 
-/* kruhové zóny kolem symbolů */
+/* modrá aura jen při kliknutí na kruh */
+.iWheelZone::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:64px;
+  height:64px;
+  transform:translate(-50%,-50%) scale(.82);
+  border-radius:50%;
+  opacity:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle,
+      rgba(90,160,255,.34) 0%,
+      rgba(90,160,255,.20) 42%,
+      rgba(90,160,255,.10) 62%,
+      rgba(90,160,255,0) 100%);
+  transition:
+    opacity .12s ease,
+    transform .14s ease;
+}
+
+.iWheelZone.is-pressed::after{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+/* přesně 4 kruhy na jedné kružnici */
 .iWheelZone--top{
   left:50%;
   top:25%;
@@ -49,8 +79,17 @@
   top:50%;
 }
 
+.iWheelCenter{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:12;
+}
+
+/* ikonky jen vizuál */
 .iWheelIcon{
-  z-index:10;
+  z-index:13;
   pointer-events:none;
   color:rgba(0,0,0,.68);
   font-weight:600;
@@ -82,6 +121,7 @@
   font-size:20px;
 }
 
+/* logo nahoře je jen vizuál, klik bere top kruh */
 .iWheelIcon .cardBtn{
   width:20px;
   height:20px;
@@ -90,8 +130,8 @@
   border:none;
   background:transparent;
   display:block;
-  pointer-events:auto;
-  cursor:pointer;
+  pointer-events:none;
+  cursor:default;
 }
 
 .iWheelIcon .cardBtn svg{
