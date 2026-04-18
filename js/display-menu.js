@@ -215,6 +215,48 @@ function bindMenuClicks() {
   });
 }
 
+function selectedIndexForMenu(menuKey) {
+  const menu = menus[menuKey] || [];
+
+  if (menuKey === "theme") {
+    return Math.max(0, menu.findIndex((item) => item.action === `theme-${state.theme}`));
+  }
+
+  if (menuKey === "preset") {
+    return Math.max(0, menu.findIndex((item) => item.action === `preset-${state.preset}`));
+  }
+
+  if (menuKey === "backlight") {
+    return Math.max(0, menu.findIndex((item) => item.action === `backlight-${state.backlight}`));
+  }
+
+  if (menuKey === "ink") {
+    return Math.max(0, menu.findIndex((item) => item.action === `ink-${state.ink}`));
+  }
+
+  if (menuKey === "eq") {
+    return Math.max(0, menu.findIndex((item) => item.action === `eq-${state.eq}`));
+  }
+
+  if (menuKey === "playmode") {
+    if (state.repeat === "one") {
+      return Math.max(0, menu.findIndex((item) => item.action === "playmode-repeat-one"));
+    }
+
+    if (state.repeat === "all") {
+      return Math.max(0, menu.findIndex((item) => item.action === "playmode-repeat-all"));
+    }
+
+    if (state.shuffle) {
+      return Math.max(0, menu.findIndex((item) => item.action === "playmode-shuffle"));
+    }
+
+    return Math.max(0, menu.findIndex((item) => item.action === "playmode-normal"));
+  }
+
+  return 0;
+}
+
 // ===== RENDER =====
 
 function renderMenu() {
@@ -338,7 +380,7 @@ function menuSelect() {
 
   if (isSubmenuAction(item.action)) {
     ui.stack.push(item.action);
-    ui.index = 0;
+    ui.index = selectedIndexForMenu(item.action);
     renderMenu();
     return;
   }
