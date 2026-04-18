@@ -103,17 +103,38 @@
   </div>
 
 
-  <script src="js/settings-storage.js"></script>
-  <script src="js/display-data.js"></script>
-  <script src="js/playlist-data.js"></script>
-  <script src="js/player-engine.js"></script>
-  <script src="js/display-render.js"></script>
-  <script src="js/wheel.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/display-controls.js"></script>
-  <script src="js/display-menu.js"></script>
-  <script src="js/drag-player.js"></script>
+  <!-- STATE + STORAGE -->
+<script src="js/settings-storage.js"></script>
+<script src="js/display-data.js"></script>
 
-  
+<!-- MENU (potřebuje state) -->
+<script src="js/display-menu.js"></script>
+
+<!-- RENDER (potřebuje menu + state) -->
+<script src="js/display-render.js"></script>
+
+<!-- CONTROLS (potřebuje render) -->
+<script src="js/display-controls.js"></script>
+
+<!-- PLAYER DATA -->
+<script src="js/playlist-data.js"></script>
+
+<!-- METADATA (externí knihovna MUSÍ být před loaderem) -->
+<script src="https://cdn.jsdelivr.net/npm/jsmediatags@3.9.5/dist/jsmediatags.min.js"></script>
+<script src="js/metadata-loader.js"></script>
+
+<!-- PLAYER ENGINE (potřebuje metadata + playlist) -->
+<script src="js/player-engine.js"></script>
+
+<!-- INPUT (wheel potřebuje player + state) -->
+<script src="js/wheel.js"></script>
+
+<!-- DRAG -->
+<script src="js/drag-player.js"></script>
+
+<!-- APP INIT -->
+<script src="js/main.js"></script>
+
+
 </body>
 </html>
