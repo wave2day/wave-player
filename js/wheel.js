@@ -11,8 +11,7 @@ const wheelState = {
   pointerId: null,
   lastAngle: null,
   angleBuffer: 0,
-  lastStepAt: 0,
-  suppressClickUntil: 0
+  lastStepAt: 0
 };
 
 const WHEEL_STEP_DEG = 22;
@@ -74,6 +73,7 @@ function shouldIgnoreWheelGestureTarget(target) {
 
   return !!(
     target.closest(".iWheelCenter") ||
+    target.closest(".iWheelZone") ||
     target.closest(".cardBtn")
   );
 }
@@ -159,7 +159,6 @@ function beginWheelTracking(e) {
   wheelState.lastAngle = p.angle;
   wheelState.angleBuffer = 0;
   wheelState.lastStepAt = 0;
-  wheelState.suppressClickUntil = Date.now() + 220;
 
   wheelRoot.setPointerCapture?.(e.pointerId);
   e.preventDefault();
@@ -178,7 +177,11 @@ function updateWheelTracking(e) {
   wheelState.angleBuffer += delta;
 
   const now = Date.now();
-  if (now - wheelState.lastStepAt < WHEEL_THROTTLE_MS) return;
+  if (now - wheelState.lastStepAt < WHEEL_THROTTLE_MS) {
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
 
   while (Math.abs(wheelState.angleBuffer) >= WHEEL_STEP_DEG) {
     const direction = wheelState.angleBuffer > 0 ? 1 : -1;
@@ -203,8 +206,44 @@ function endWheelTracking(e) {
   wheelRoot.releasePointerCapture?.(e.pointerId);
 }
 
-function shouldSuppressZoneClick() {
-  return Date.now() < wheelState.suppressClickUntil;
+function resetWheelTracking() {
+  wheelState.tracking = false;
+  wheelState.pointerId = null;
+  wheelState.lastAngle = null;
+  wheelState.angleBuffer = 0;
+  wheelState.lastStepAt = 0;
+}
+
+function setZonePressed(zone, pressed) {
+  if (!zone) return;
+  zone.classList.toggle("is-pressed", pressed);
+}
+
+function pulseHaptic(ms = 10) {
+  if (navigator.vibrate) {
+    navigator.vibrate(ms);
+  }
+}
+
+function bindZoneFeedback(zone) {
+  if (!zone) return;
+
+  zone.addEventListener("pointerdown", () => {
+    setZonePressed(zone, true);
+    pulseHaptic(10);
+  });
+
+  zone.addEventListener("pointerup", () => {
+    setZonePressed(zone, false);
+  });
+
+  zone.addEventListener("pointercancel", () => {
+    setZonePressed(zone, false);
+  });
+
+  zone.addEventListener("pointerleave", () => {
+    setZonePressed(zone, false);
+  });
 }
 
 if (wheelRoot) {
@@ -212,47 +251,27 @@ if (wheelRoot) {
   wheelRoot.addEventListener("pointermove", updateWheelTracking);
   wheelRoot.addEventListener("pointerup", endWheelTracking);
   wheelRoot.addEventListener("pointercancel", endWheelTracking);
-  wheelRoot.addEventListener("lostpointercapture", () => {
-    wheelState.tracking = false;
-    wheelState.pointerId = null;
-    wheelState.lastAngle = null;
-    wheelState.angleBuffer = 0;
-  });
+  wheelRoot.addEventListener("lostpointercapture", resetWheelTracking);
 }
 
-/* ===== FIXNÍ KLIKY ===== */
+/* ===== KLIKY NA 4 KRUHY + STŘED ===== */
+
+bindZoneFeedback(wheelTopZone);
+bindZoneFeedback(wheelRightZone);
+bindZoneFeedback(wheelBottomZone);
+bindZoneFeedback(wheelLeftZone);
 
 if (menuBtn) {
   menuBtn.addEventListener("click", (e) => {
-    if (shouldSuppressZoneClick()) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
-
     e.preventDefault();
     e.stopPropagation();
-
-    if (typeof state !== "undefined" && state.volumeMode) {
-      if (typeof closeVolumeMode === "function") {
-        closeVolumeMode();
-      }
-      return;
-    }
-
-    if (typeof toggleMenu === "function") {
-      toggleMenu();
-    }
   });
 }
 
 if (wheelTopZone) {
   wheelTopZone.addEventListener("click", (e) => {
-    if (shouldSuppressZoneClick()) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
+    e.preventDefault();
+    e.stopPropagation();
 
     if (typeof state !== "undefined" && state.volumeMode) {
       if (typeof stepVolume === "function") stepVolume(1);
@@ -267,11 +286,8 @@ if (wheelTopZone) {
 
 if (wheelRightZone) {
   wheelRightZone.addEventListener("click", (e) => {
-    if (shouldSuppressZoneClick()) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
+    e.preventDefault();
+    e.stopPropagation();
 
     if (typeof state !== "undefined" && state.volumeMode) {
       if (typeof stepVolume === "function") stepVolume(1);
@@ -286,11 +302,8 @@ if (wheelRightZone) {
 
 if (wheelBottomZone) {
   wheelBottomZone.addEventListener("click", (e) => {
-    if (shouldSuppressZoneClick()) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
+    e.preventDefault();
+    e.stopPropagation();
 
     if (typeof state !== "undefined" && state.volumeMode) {
       if (typeof stepVolume === "function") stepVolume(-1);
@@ -305,11 +318,8 @@ if (wheelBottomZone) {
 
 if (wheelLeftZone) {
   wheelLeftZone.addEventListener("click", (e) => {
-    if (shouldSuppressZoneClick()) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
+    e.preventDefault();
+    e.stopPropagation();
 
     if (typeof state !== "undefined" && state.volumeMode) {
       if (typeof stepVolume === "function") stepVolume(-1);
@@ -324,11 +334,8 @@ if (wheelLeftZone) {
 
 if (wheelCenterBtn) {
   wheelCenterBtn.addEventListener("click", (e) => {
-    if (shouldSuppressZoneClick()) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
+    e.preventDefault();
+    e.stopPropagation();
 
     if (typeof state !== "undefined" && state.volumeMode) {
       if (typeof closeVolumeMode === "function") {
