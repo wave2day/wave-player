@@ -155,7 +155,6 @@ function renderPlayer() {
 
   const metaText =
     typeof player !== "undefined" &&
-    player &&
     Array.isArray(player.playlist) &&
     player.playlist.length
       ? `${player.index + 1} of ${player.playlist.length}`
@@ -165,11 +164,9 @@ function renderPlayer() {
     <div class="lcd">
       <div class="lcdTopbar">
         ${renderStateCluster()}
-
-        <div class="lcdArtistTop" data-text="${state.nowPlaying.artist}">
-          ${state.nowPlaying.artist}
+        <div class="lcdArtistTop" data-text="${state.nowPlaying.artist || ""}">
+          ${state.nowPlaying.artist || ""}
         </div>
-
         ${renderVolumeIcon()}
       </div>
 
@@ -177,16 +174,16 @@ function renderPlayer() {
         <div class="lcdMeta">${metaText}</div>
 
         <div class="lcdCenter">
-          <div class="lcdTitle" data-text="${state.nowPlaying.title}">
-            ${state.nowPlaying.title}
+          <div class="lcdTitle" data-text="${state.nowPlaying.title || ""}">
+            ${state.nowPlaying.title || ""}
           </div>
 
-          <div class="lcdArtist" data-text="${state.nowPlaying.artist}">
-            ${state.nowPlaying.artist}
+          <div class="lcdArtist" data-text="${state.nowPlaying.artist || ""}">
+            ${state.nowPlaying.artist || ""}
           </div>
 
-          <div class="lcdAlbum" data-text="${state.nowPlaying.album}">
-            ${state.nowPlaying.album}
+          <div class="lcdAlbum" data-text="${state.nowPlaying.album || ""}">
+            ${state.nowPlaying.album || ""}
           </div>
         </div>
       </div>
@@ -198,11 +195,11 @@ function renderPlayer() {
           </div>
 
           <div class="lcdTimes">
-            <span data-text="${state.nowPlaying.time}">
-              ${state.nowPlaying.time}
+            <span data-text="${state.nowPlaying.time || "0:00"}">
+              ${state.nowPlaying.time || "0:00"}
             </span>
-            <span data-text="${state.nowPlaying.remaining}">
-              ${state.nowPlaying.remaining}
+            <span data-text="${state.nowPlaying.remaining || "-0:00"}">
+              ${state.nowPlaying.remaining || "-0:00"}
             </span>
           </div>
         </div>
@@ -212,13 +209,8 @@ function renderPlayer() {
     </div>
   `;
 
-  if (typeof bindDisplayUI === "function") {
-    bindDisplayUI();
-  }
-
-  if (typeof applyDisplayState === "function") {
-    applyDisplayState();
-  }
+  if (typeof bindDisplayUI === "function") bindDisplayUI();
+  if (typeof applyDisplayState === "function") applyDisplayState();
 }
 
 function ensureLibrarySelectionVisible() {
@@ -272,13 +264,25 @@ function renderLibrary() {
         ${renderVolumeIcon()}
       </div>
 
-      <div class="lcdList">
-        ${tracks.map((t, i) => `
-          <div class="lcdListItem ${i === player.index ? "is-active" : ""}" data-index="${i}">
-            <div class="lcdListTitle">${t.title}</div>
-            <div class="lcdListArtist">${t.artist}</div>
-          </div>
-        `).join("")}
+      <div class="lcdListViewport">
+        <div class="lcdList">
+          ${tracks.map((t, i) => `
+            <div class="lcdListItem ${i === player.index ? "is-active" : ""}" data-index="${i}">
+              <div class="lcdListCover">
+                ${
+                  t.coverArt
+                    ? `<img class="lcdListCoverImg" src="${t.coverArt}" alt="">`
+                    : `<div class="lcdListCoverFallback"></div>`
+                }
+              </div>
+
+              <div class="lcdListText">
+                <div class="lcdListTitle">${t.title || extractFileName(t.audioUrl) || "Unknown"}</div>
+                <div class="lcdListArtist">${t.artist || "Unknown"}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
       </div>
 
       ${renderOSD()}
@@ -288,13 +292,8 @@ function renderLibrary() {
   bindLibraryUI();
   ensureLibrarySelectionVisible();
 
-  if (typeof bindDisplayUI === "function") {
-    bindDisplayUI();
-  }
-
-  if (typeof applyDisplayState === "function") {
-    applyDisplayState();
-  }
+  if (typeof bindDisplayUI === "function") bindDisplayUI();
+  if (typeof applyDisplayState === "function") applyDisplayState();
 }
 
 function bindLibraryUI() {

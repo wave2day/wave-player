@@ -32,9 +32,9 @@ function syncNowPlayingMeta() {
   const track = getCurrentTrack();
   if (!track || typeof state === "undefined") return;
 
-  state.nowPlaying.artist = track.artist || "";
-  state.nowPlaying.title = track.title || "";
-  state.nowPlaying.album = track.album || "";
+  state.nowPlaying.artist = track.artist || "Unknown";
+  state.nowPlaying.title = track.title || "Unknown";
+  state.nowPlaying.album = track.album || "Unknown";
 }
 
 function syncNowPlayingTimes() {
@@ -87,6 +87,19 @@ function loadPlaylist(data) {
     player.playlist = [];
     player.index = 0;
     player.isReady = false;
+
+    if (typeof state !== "undefined") {
+      state.nowPlaying.artist = "";
+      state.nowPlaying.title = "";
+      state.nowPlaying.album = "";
+      state.nowPlaying.time = "0:00";
+      state.nowPlaying.remaining = "-0:00";
+    }
+
+    if (typeof rerenderActiveScreen === "function") {
+      rerenderActiveScreen();
+    }
+
     return;
   }
 
@@ -234,19 +247,33 @@ document.addEventListener("DOMContentLoaded", async () => {
   syncVolumeToAudio();
 
   try {
+    let sourcePlaylist = null;
+
     if (typeof loadPlaylistDataFromGitHub === "function") {
-      await loadPlaylistDataFromGitHub();
+      sourcePlaylist = await loadPlaylistDataFromGitHub();
+    } else if (typeof playlistData !== "undefined") {
+      sourcePlaylist = playlistData;
     }
 
-    if (typeof buildPlaylistFromMetadata === "function") {
-      const readyPlaylist = await buildPlaylistFromMetadata(playlistData);
-      loadPlaylist(readyPlaylist);
+    if (!sourcePlaylist) {
+      console.warn("No playlist source available");
+      loadPlaylist({ title: "Playlist", tracks: [] });
       return;
     }
 
-    loadPlaylist(playlistData);
+    const finalPlaylist =
+      typeof buildPlaylistFromMetadata === "function"
+        ? await buildPlaylistFromMetadata(sourcePlaylist)
+        : sourcePlaylist;
+
+    loadPlaylist(finalPlaylist);
   } catch (err) {
     console.warn("Playlist init failed", err);
-    loadPlaylist(playlistData);
+
+    if (typeof playlistData !== "undefined") {
+      loadPlaylist(playlistData);
+    } else {
+      loadPlaylist({ title: "Playlist", tracks: [] });
+    }
   }
 });
