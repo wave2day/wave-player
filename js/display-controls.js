@@ -329,7 +329,13 @@ function closeVolumeMode() {
 
 function setEq(name) {
   if (typeof state === "undefined") return;
+
   state.eq = name;
+
+  if (typeof applyEqPreset === "function") {
+    applyEqPreset(name);
+  }
+
   saveDisplayState();
   rerenderActiveScreen();
 }
