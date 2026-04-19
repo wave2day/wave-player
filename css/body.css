@@ -84,10 +84,10 @@
       var(--botRim1) 0%,
       var(--botRim2) 22%,
       transparent 52%),
-    radial-gradient(170% 120% at 50% -38%,
-      rgba(0,0,0,.30) 0%,
-      rgba(0,0,0,.12) 14%,
-      transparent var(--topRimFade));
+  radial-gradient(140% 90% at 50% -20%,
+  rgba(0,0,0,.22) 0%,
+  rgba(0,0,0,.10) 18%,
+  transparent 42%);
 
   -webkit-mask:
   linear-gradient(#000 0 0) content-box,

@@ -32,8 +32,8 @@
   --bleedA:.085;
   --bleedB:.040;
   --rimTint:170,190,255;
-  --bleedX:78%;
-  --bleedY:86%;
+  --bleedX:60%;
+  --bleedY:78%;
 }
 
 *{box-sizing:border-box}
